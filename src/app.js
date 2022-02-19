@@ -8,6 +8,7 @@ const cors = require('cors');
 const regearsRouter = require('./regears/regears.router');
 
 const app = express();
+
 app.use(cors());
 app.use(express.json());
 
