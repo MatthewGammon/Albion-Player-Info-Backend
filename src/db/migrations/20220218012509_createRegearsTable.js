@@ -3,6 +3,7 @@ exports.up = function (knex) {
     table.increments('regear_id').primary();
     table.string('event_id').notNullable();
     table.string('character_name').notNullable();
+    table.string('guild_name').notNullable();
     table.string('head_piece').notNullable();
     table.string('chest_armor').notNullable();
     table.string('shoes').notNullable();
