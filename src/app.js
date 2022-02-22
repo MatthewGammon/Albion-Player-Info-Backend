@@ -6,6 +6,7 @@ const express = require('express');
 const cors = require('cors');
 
 const errorHandler = require('./errors/errorHandler');
+const notFound = require('./errors/notFound');
 const regearsRouter = require('./regears/regears.router');
 
 const app = express();
@@ -15,5 +16,7 @@ app.use(express.json());
 
 app.use('/regears', regearsRouter);
 
+app.use(notFound);
 app.use(errorHandler);
+
 module.exports = app;
