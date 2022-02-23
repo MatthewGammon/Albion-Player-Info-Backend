@@ -270,7 +270,7 @@ function validateWeapon(req, res, next) {
   if (!validGear.weapons.includes(weaponName)) {
     next({
       status: 400,
-      message: `${weaponName} is not a regearbable weapon.`,
+      message: `${weaponName} is not a regearable weapon.`,
     });
   }
 
