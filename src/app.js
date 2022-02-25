@@ -1,5 +1,5 @@
 const path = require('path');
-
+const { createProxyMiddleware } = require('http-proxy-middleware');
 require('dotenv').config({ path: path.join(__dirname, '..', '.env') });
 
 const express = require('express');
@@ -15,6 +15,13 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/regears', regearsRouter);
+app.use(
+  '/',
+  createProxyMiddleware({
+    target: 'https://gameinfo.albiononline.com/api/gameinfo',
+    changeOrigin: true,
+  })
+);
 
 app.use(notFound);
 app.use(errorHandler);
