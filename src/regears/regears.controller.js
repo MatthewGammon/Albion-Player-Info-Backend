@@ -4,18 +4,45 @@ const validGear = require('../data/validGear.json');
 const asyncErrorBoundary = require('../errors/asyncErrorBoundary');
 
 const validGuilds = ['Tidal', 'Tidal Surge', 'Ripple'];
+const minTier = 8;
+const minIp = 1300;
 
 const validProperties = [
   'event_id',
+  'time_of_death',
   'character_name',
   'guild_name',
+  'item_power',
+  'main_hand',
   'head_piece',
   'chest_armor',
   'shoes',
-  'main_hand',
 ];
 
 const armorTypes = ['CLOTH', 'LEATHER', 'PLATE'];
+
+function generateTier(itemSlot) {
+  const tier = parseInt(itemSlot.slice(1, 2));
+  const enchantment = parseInt(itemSlot.split('@')[1]);
+
+  let tierEquivalent = tier;
+  let itemLevel = tier;
+
+  if (!isNaN(enchantment)) {
+    tierEquivalent += enchantment;
+    itemLevel = `${tier}.${enchantment}`;
+  }
+
+  return {
+    tierEquivalent,
+    itemLevel,
+  };
+}
+
+function getItemName(itemFullName) {
+  const shortenedName = itemFullName.split(' ').slice(1).join(' ');
+  return shortenedName;
+}
 
 function hasData(req, res, next) {
   const { data } = req.body;
@@ -66,6 +93,7 @@ async function regearExists(req, res, next) {
   } else {
     res.locals.regear = {
       event_id,
+      time_of_death: req.body.data.time_of_death,
     };
   }
   next();
@@ -98,159 +126,17 @@ function hasCharacterName(req, res, next) {
   next();
 }
 
-function validateHeadPiece(req, res, next) {
-  const { head_piece } = req.body.data;
+function validateIp(req, res, next) {
+  const { item_power } = req.body.data;
+  const ipAsNum = parseInt(item_power);
 
-  if (head_piece === '' || typeof head_piece !== 'string') {
+  if (ipAsNum < minIp) {
     next({
       status: 400,
-      message: `No head piece equipped!`,
+      message: `Item power does not meet minimum requirements.`,
     });
   }
-
-  const gearObject = gear.filter((item) => item.UniqueName === head_piece);
-  const gearName = gearObject[0].LocalizedNames['EN-US'];
-  const findArmorType = armorTypes.filter((type) => head_piece.includes(type));
-  let armorType;
-
-  if (findArmorType.length) {
-    armorType = findArmorType[0].toLowerCase();
-  } else {
-    next({
-      status: 400,
-      message: `${gearName} is not a regearable item.`,
-    });
-  }
-
-  if (!validGear.armor_type[armorType].head_piece.includes(gearName)) {
-    next({
-      status: 400,
-      message: `${gearName} is not a regearable item.`,
-    });
-  }
-
-  const tier = parseInt(head_piece.slice(1, 2));
-  const enchantment = parseInt(head_piece.split('@')[1]);
-  let tierEquivalent = tier;
-
-  if (!isNaN(enchantment)) {
-    tierEquivalent += enchantment;
-  }
-
-  if (tierEquivalent < 8) {
-    next({
-      status: 400,
-      message: `${gearName} does not meet minimum tier equivalency. (equal to tier ${tierEquivalent}) `,
-    });
-  }
-
-  res.locals.regear.head_piece = gearName;
-  next();
-}
-
-function validateChestPiece(req, res, next) {
-  const { chest_armor } = req.body.data;
-
-  if (chest_armor === '' || typeof chest_armor !== 'string') {
-    next({
-      status: 400,
-      message: `No chest piece equipped!`,
-    });
-  }
-
-  const gearObject = gear.filter((item) => item.UniqueName === chest_armor);
-  let gearName;
-  if (gearObject.length) {
-    gearName = gearObject[0].LocalizedNames['EN-US'];
-  } else {
-    gearName = chest_armor;
-    next({
-      status: 400,
-      message: `${gearName} is not a valid in game item.`,
-    });
-  }
-  const findArmorType = armorTypes.filter((type) => chest_armor.includes(type));
-  let armorType;
-  if (findArmorType.length) {
-    armorType = findArmorType[0].toLowerCase();
-  } else {
-    next({
-      status: 400,
-      message: `${gearName} is not a regearable item.`,
-    });
-  }
-
-  if (!validGear.armor_type[armorType].chest_armor.includes(gearName)) {
-    next({
-      status: 400,
-      message: `${gearName} is not a regearable item.`,
-    });
-  }
-
-  const tier = parseInt(chest_armor.slice(1, 2));
-  const enchantment = parseInt(chest_armor.split('@')[1]);
-  let tierEquivalent = tier;
-
-  if (!isNaN(enchantment)) {
-    tierEquivalent += enchantment;
-  }
-
-  if (tierEquivalent < 8) {
-    next({
-      status: 400,
-      message: `${gearName} does not meet minimum tier equivalency. (equal to tier ${tierEquivalent}) `,
-    });
-  }
-
-  res.locals.regear.chest_armor = gearName;
-  next();
-}
-
-function validateShoes(req, res, next) {
-  const { shoes } = req.body.data;
-  if (shoes === '' || typeof shoes !== 'string') {
-    next({
-      status: 400,
-      message: `shoes must be a non-empty string`,
-    });
-  }
-
-  const gearObject = gear.filter((item) => item.UniqueName === shoes);
-  const gearName = gearObject[0].LocalizedNames['EN-US'];
-  const findArmorType = armorTypes.filter((type) => shoes.includes(type));
-  let armorType;
-  if (findArmorType.length) {
-    armorType = findArmorType[0].toLowerCase();
-  } else {
-    next({
-      status: 400,
-      message: `${gearName} is not a regearable item.`,
-    });
-  }
-
-  if (!validGear.armor_type[armorType].shoes.includes(gearName)) {
-    next({
-      status: 400,
-      message: `${gearName} is not a regearable item.`,
-    });
-  }
-
-  const tier = parseInt(shoes.slice(1, 2));
-  const enchantment = parseInt(shoes.split('@')[1]);
-  let tierEquivalent = tier;
-
-  if (!isNaN(enchantment)) {
-    tierEquivalent += enchantment;
-  }
-
-  if (tierEquivalent < 8) {
-    next({
-      status: 400,
-      message: `${gearName} does not meet minimum tier equivalency. (equal to tier ${tierEquivalent}) `,
-    });
-  }
-
-  res.locals.regear.shoes = gearName;
+  res.locals.regear.item_power = item_power;
   next();
 }
 
@@ -265,35 +151,171 @@ function validateWeapon(req, res, next) {
   }
 
   const gearObject = gear.filter((item) => item.UniqueName === main_hand);
-  const weaponName = gearObject[0].LocalizedNames['EN-US'];
+  const weaponFullName = gearObject[0].LocalizedNames['EN-US'];
+  const weaponName = getItemName(weaponFullName);
 
-  if (!validGear.weapons.includes(weaponName)) {
+  if (!validGear.weapons.includes(weaponFullName)) {
     next({
       status: 400,
-      message: `${weaponName} is not a regearable weapon.`,
+      message: `${weaponFullName} is not a regearable weapon.`,
     });
   }
 
-  const tier = parseInt(main_hand.slice(1, 2));
-  const enchantment = parseInt(main_hand.split('@')[1]);
-  let tierEquivalent = tier;
+  const itemInfo = generateTier(main_hand);
 
-  if (!isNaN(enchantment)) {
-    tierEquivalent += enchantment;
-  }
-
-  if (tierEquivalent < 8) {
+  if (itemInfo.tierEquivalent < minTier) {
     next({
       status: 400,
-      message: `${weaponName} does not meet minimum tier equivalency. (equal to tier ${tierEquivalent}) `,
+      message: `${weaponFullName} does not meet minimum tier equivalency. (equal to tier ${tierEquivalent}) `,
     });
   }
 
+  res.locals.regear.main_tier = itemInfo.itemLevel;
   res.locals.regear.main_hand = weaponName;
   next();
 }
 
+function validateHeadPiece(req, res, next) {
+  const { head_piece } = req.body.data;
+
+  if (head_piece === '' || typeof head_piece !== 'string') {
+    next({
+      status: 400,
+      message: `No head piece equipped!`,
+    });
+  }
+
+  const gearObject = gear.filter((item) => item.UniqueName === head_piece);
+  const itemFullName = gearObject[0].LocalizedNames['EN-US'];
+  const itemName = getItemName(itemFullName);
+
+  const findArmorType = armorTypes.filter((type) => head_piece.includes(type));
+  let armorType;
+
+  if (findArmorType.length) {
+    armorType = findArmorType[0].toLowerCase();
+  } else {
+    next({
+      status: 400,
+      message: `${itemFullName} is not a regearable item.`,
+    });
+  }
+
+  if (!validGear.armor_type[armorType].head_piece.includes(itemFullName)) {
+    next({
+      status: 400,
+      message: `${itemFullName} is not a regearable item.`,
+    });
+  }
+
+  const itemInfo = generateTier(head_piece);
+
+  if (itemInfo.tierEquivalent < minTier) {
+    next({
+      status: 400,
+      message: `${itemFullName} does not meet minimum tier equivalency. (equal to tier ${tierEquivalent}) `,
+    });
+  }
+
+  res.locals.regear.head_tier = itemInfo.itemLevel;
+  res.locals.regear.head_piece = itemName;
+  next();
+}
+
+function validateChestPiece(req, res, next) {
+  const { chest_armor } = req.body.data;
+
+  if (chest_armor === '' || typeof chest_armor !== 'string') {
+    next({
+      status: 400,
+      message: `No chest piece equipped!`,
+    });
+  }
+
+  const gearObject = gear.filter((item) => item.UniqueName === chest_armor);
+
+  const itemFullName = gearObject[0].LocalizedNames['EN-US'];
+  const itemName = getItemName(itemFullName);
+
+  const findArmorType = armorTypes.filter((type) => chest_armor.includes(type));
+  let armorType;
+  if (findArmorType.length) {
+    armorType = findArmorType[0].toLowerCase();
+  } else {
+    next({
+      status: 400,
+      message: `${itemFullName} is not a regearable item.`,
+    });
+  }
+
+  if (!validGear.armor_type[armorType].chest_armor.includes(itemFullName)) {
+    next({
+      status: 400,
+      message: `${itemFullName} is not a regearable item.`,
+    });
+  }
+
+  const itemInfo = generateTier(chest_armor);
+
+  if (itemInfo.tierEquivalent < minTier) {
+    next({
+      status: 400,
+      message: `${itemFullName} does not meet minimum tier equivalency. (equal to tier ${tierEquivalent}) `,
+    });
+  }
+
+  res.locals.regear.chest_tier = itemInfo.itemLevel;
+  res.locals.regear.chest_armor = itemName;
+  next();
+}
+
+function validateShoes(req, res, next) {
+  const { shoes } = req.body.data;
+  if (shoes === '' || typeof shoes !== 'string') {
+    next({
+      status: 400,
+      message: `shoes must be a non-empty string`,
+    });
+  }
+
+  const gearObject = gear.filter((item) => item.UniqueName === shoes);
+  const itemFullName = gearObject[0].LocalizedNames['EN-US'];
+  const itemName = getItemName(itemFullName);
+
+  const findArmorType = armorTypes.filter((type) => shoes.includes(type));
+  let armorType;
+  if (findArmorType.length) {
+    armorType = findArmorType[0].toLowerCase();
+  } else {
+    next({
+      status: 400,
+      message: `${itemFullName} is not a regearable item.`,
+    });
+  }
+
+  if (!validGear.armor_type[armorType].shoes.includes(itemFullName)) {
+    next({
+      status: 400,
+      message: `${itemFullName} is not a regearable item.`,
+    });
+  }
+
+  const itemInfo = generateTier(shoes);
+
+  if (itemInfo.tierEquivalent < minTier) {
+    next({
+      status: 400,
+      message: `${itemFullName} does not meet minimum tier equivalency. (equal to tier ${tierEquivalent}) `,
+    });
+  }
+
+  res.locals.regear.shoes_tier = itemInfo.itemLevel;
+  res.locals.regear.shoes = itemName;
+  next();
+}
+
 async function create(req, res, next) {
+  console.log(res.locals.regear);
   const newSubmission = await service.create(res.locals.regear);
   res.status(201).json({ data: newSubmission });
 }
@@ -310,10 +332,11 @@ module.exports = {
     asyncErrorBoundary(regearExists),
     validateGuild,
     hasCharacterName,
+    validateIp,
+    validateWeapon,
     validateHeadPiece,
     validateChestPiece,
     validateShoes,
-    validateWeapon,
     asyncErrorBoundary(create),
   ],
   list: [asyncErrorBoundary(list)],
