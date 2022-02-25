@@ -1,0 +1,76 @@
+{
+  "Malevolent Locus": {
+    "role": "support",
+    "minimum_ip": 1300,
+    "main_hand": "Malevolent Locus",
+    "head_piece": "Assassin Hood",
+    "chest_armor": "Judicator Armor",
+    "shoes": ["Hunter Shoes", "Scholar Sandals"],
+    "cape": "Martlock Cape"
+  },
+  "Enigmatic Staff": {
+    "role": "support",
+    "minimum_ip": 1300,
+    "main_hand": "Enigmatic Staff",
+    "head_piece": ["Assassin Hood", "Knight Helmet"],
+    "chest_armor": ["Judicator Armor", "Robe of Purity"],
+    "shoes": "Graveguard Boots",
+    "cape": "Martlock Cape"
+  },
+  "Occult Staff": {
+    "role": "support",
+    "minimum_ip": 1300,
+    "main_hand": "Occult Staff",
+    "head_piece": "Assassin Hood",
+    "chest_armor": ["Judicator Armor", "Demon Armor"],
+    "shoes": "Hunter Shoes",
+    "cape": "Martlock Cape"
+  },
+  "Arcane Staff": {
+    "role": "support",
+    "minimum_ip": 1300,
+    "main_hand": "Arcane Staff",
+    "off_hand": "Mistcaller",
+    "head_piece": "Judicator Helmet",
+    "chest_armor": ["Knight Armor, Armor of Valor"],
+    "shoes": "Hunter Shoes",
+    "cape": "Martlock Cape"
+  },
+  "Lifecurse Staff": {
+    "role": "support",
+    "minimum_ip": 1300,
+    "main_hand": "Lifecurse Staff",
+    "off_hand": "Mistcaller",
+    "head_piece": "Assassin Hood",
+    "chest_armor": ["Demon Armor", "Judicator Armor"],
+    "shoes": "Hunter Shoes",
+    "cape": "Martlock Cape"
+  },
+  "Fallen Staff": {
+    "role": "healer",
+    "minimum_ip": 1300,
+    "main_hand": "Fallen Staff",
+    "head_piece": ["Knight Helmet, Mercenary Hood"],
+    "chest_armor": "Cleric Robe",
+    "shoes": "Scholar Sandals",
+    "cape": "Fort Sterling Cape"
+  },
+  "Wild Staff": {
+    "role": "healer",
+    "minimum_ip": 1300,
+    "main_hand": "Wild Staff",
+    "head_piece": "Mercenary Hood",
+    "chest_armor": "Cleric Robe",
+    "shoes": "Scholar Sandals",
+    "cape": "Fort Sterling Cape"
+  },
+  "Blight Staff": {
+    "role": "healer",
+    "minimum_ip": 1300,
+    "main_hand": "Blight Staff",
+    "head_piece": "Mercenary Hood",
+    "chest_armor": "Cleric Robe",
+    "shoes": "Scholar Sandals",
+    "cape": "Fort Sterling Cape"
+  }
+}
