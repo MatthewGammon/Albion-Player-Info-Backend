@@ -46,6 +46,7 @@ function getItemName(itemFullName) {
 
 function hasData(req, res, next) {
   const { data } = req.body;
+
   if (!data) {
     next({
       status: 400,
@@ -73,6 +74,7 @@ function hasValidProperties(req, res, next) {
 function hasEventId(req, res, next) {
   const index = validProperties.indexOf('event_id');
   const { event_id } = req.body.data;
+
   if (event_id === '' || typeof event_id !== 'string') {
     next({
       status: 400,
@@ -85,6 +87,7 @@ function hasEventId(req, res, next) {
 async function regearExists(req, res, next) {
   const { event_id } = req.body.data;
   const regear = await service.read(event_id);
+
   if (regear) {
     next({
       status: 400,
@@ -101,6 +104,7 @@ async function regearExists(req, res, next) {
 
 function validateGuild(req, res, next) {
   const { guild_name } = req.body.data;
+
   if (!validGuilds.includes(guild_name)) {
     next({
       status: 400,
@@ -115,6 +119,7 @@ function validateGuild(req, res, next) {
 function hasCharacterName(req, res, next) {
   const index = validProperties.indexOf('character_name');
   const { character_name } = req.body.data;
+
   if (character_name === '' || typeof character_name !== 'string') {
     next({
       status: 400,
@@ -166,7 +171,7 @@ function validateWeapon(req, res, next) {
   if (itemInfo.tierEquivalent < minTier) {
     next({
       status: 400,
-      message: `${weaponFullName} does not meet minimum tier equivalency. (equal to tier ${tierEquivalent}) `,
+      message: `${weaponFullName} does not meet minimum tier equivalency. (equal to tier ${itemInfo.tierEquivalent}) `,
     });
   }
 
@@ -213,7 +218,7 @@ function validateHeadPiece(req, res, next) {
   if (itemInfo.tierEquivalent < minTier) {
     next({
       status: 400,
-      message: `${itemFullName} does not meet minimum tier equivalency. (equal to tier ${tierEquivalent}) `,
+      message: `${itemFullName} does not meet minimum tier equivalency. (equal to tier ${itemInfo.tierEquivalent}) `,
     });
   }
 
@@ -260,7 +265,7 @@ function validateChestPiece(req, res, next) {
   if (itemInfo.tierEquivalent < minTier) {
     next({
       status: 400,
-      message: `${itemFullName} does not meet minimum tier equivalency. (equal to tier ${tierEquivalent}) `,
+      message: `${itemFullName} does not meet minimum tier equivalency. (equal to tier ${itemInfo.tierEquivalent}) `,
     });
   }
 
@@ -305,7 +310,7 @@ function validateShoes(req, res, next) {
   if (itemInfo.tierEquivalent < minTier) {
     next({
       status: 400,
-      message: `${itemFullName} does not meet minimum tier equivalency. (equal to tier ${tierEquivalent}) `,
+      message: `${itemFullName} does not meet minimum tier equivalency. (equal to tier ${itemInfo.tierEquivalent}) `,
     });
   }
 
@@ -315,7 +320,6 @@ function validateShoes(req, res, next) {
 }
 
 async function create(req, res, next) {
-  console.log(res.locals.regear);
   const newSubmission = await service.create(res.locals.regear);
   res.status(201).json({ data: newSubmission });
 }
