@@ -151,12 +151,19 @@ function validateWeapon(req, res, next) {
   if (main_hand === '' || typeof main_hand !== 'string') {
     next({
       status: 400,
-      message: `${main_hand} is not a regearable item.`,
+      message: `No weapon equipped!`,
     });
   }
 
-  const gearObject = gear.filter((item) => item.UniqueName === main_hand);
-  const weaponFullName = gearObject[0].LocalizedNames['EN-US'];
+  const itemDescription = gear.find((item) => item.UniqueName === main_hand);
+  if (!itemDescription) {
+    next({
+      status: 400,
+      message: `${main_hand} is not a valid weapon.`,
+    });
+  }
+
+  const weaponFullName = itemDescription.LocalizedNames['EN-US'];
   const weaponName = getItemName(weaponFullName);
 
   if (!validGear.weapons.includes(weaponFullName)) {
@@ -190,23 +197,24 @@ function validateHeadPiece(req, res, next) {
     });
   }
 
-  const gearObject = gear.filter((item) => item.UniqueName === head_piece);
-  const itemFullName = gearObject[0].LocalizedNames['EN-US'];
-  const itemName = getItemName(itemFullName);
-
-  const findArmorType = armorTypes.filter((type) => head_piece.includes(type));
-  let armorType;
-
-  if (findArmorType.length) {
-    armorType = findArmorType[0].toLowerCase();
-  } else {
+  const itemDescription = gear.find((item) => item.UniqueName === head_piece);
+  if (!itemDescription) {
     next({
       status: 400,
-      message: `${itemFullName} is not a regearable item.`,
+      message: `${head_piece} is not a valid item.`,
     });
   }
 
-  if (!validGear.armor_type[armorType].head_piece.includes(itemFullName)) {
+  const itemFullName = itemDescription.LocalizedNames['EN-US'];
+  const itemName = getItemName(itemFullName);
+
+  const findArmorType = armorTypes.find((type) => head_piece.includes(type));
+  const armorType = findArmorType.toLowerCase();
+
+  if (
+    !armorType ||
+    !validGear.armor_type[armorType].head_piece.includes(itemFullName)
+  ) {
     next({
       status: 400,
       message: `${itemFullName} is not a regearable item.`,
@@ -237,23 +245,24 @@ function validateChestPiece(req, res, next) {
     });
   }
 
-  const gearObject = gear.filter((item) => item.UniqueName === chest_armor);
-
-  const itemFullName = gearObject[0].LocalizedNames['EN-US'];
-  const itemName = getItemName(itemFullName);
-
-  const findArmorType = armorTypes.filter((type) => chest_armor.includes(type));
-  let armorType;
-  if (findArmorType.length) {
-    armorType = findArmorType[0].toLowerCase();
-  } else {
+  const itemDescription = gear.find((item) => item.UniqueName === chest_armor);
+  if (!itemDescription) {
     next({
       status: 400,
-      message: `${itemFullName} is not a regearable item.`,
+      message: `${chest_armor} is not a valid item.`,
     });
   }
 
-  if (!validGear.armor_type[armorType].chest_armor.includes(itemFullName)) {
+  const itemFullName = itemDescription.LocalizedNames['EN-US'];
+  const itemName = getItemName(itemFullName);
+
+  const findArmorType = armorTypes.find((type) => chest_armor.includes(type));
+  const armorType = findArmorType.toLowerCase();
+
+  if (
+    !armorType ||
+    !validGear.armor_type[armorType].chest_armor.includes(itemFullName)
+  ) {
     next({
       status: 400,
       message: `${itemFullName} is not a regearable item.`,
@@ -279,26 +288,27 @@ function validateShoes(req, res, next) {
   if (shoes === '' || typeof shoes !== 'string') {
     next({
       status: 400,
-      message: `shoes must be a non-empty string`,
+      message: `No shoes equipped!`,
     });
   }
 
-  const gearObject = gear.filter((item) => item.UniqueName === shoes);
-  const itemFullName = gearObject[0].LocalizedNames['EN-US'];
-  const itemName = getItemName(itemFullName);
-
-  const findArmorType = armorTypes.filter((type) => shoes.includes(type));
-  let armorType;
-  if (findArmorType.length) {
-    armorType = findArmorType[0].toLowerCase();
-  } else {
+  const itemDescription = gear.find((item) => item.UniqueName === shoes);
+  if (!itemDescription) {
     next({
       status: 400,
-      message: `${itemFullName} is not a regearable item.`,
+      message: `${shoes} is not a valid item.`,
     });
   }
+  const itemFullName = itemDescription.LocalizedNames['EN-US'];
+  const itemName = getItemName(itemFullName);
 
-  if (!validGear.armor_type[armorType].shoes.includes(itemFullName)) {
+  const findArmorType = armorTypes.find((type) => shoes.includes(type));
+  const armorType = findArmorType.toLowerCase();
+
+  if (
+    !armorType ||
+    !validGear.armor_type[armorType].shoes.includes(itemFullName)
+  ) {
     next({
       status: 400,
       message: `${itemFullName} is not a regearable item.`,
