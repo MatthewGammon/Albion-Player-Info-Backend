@@ -1,4 +1,67 @@
 {
+  "Galatine Pair": {
+    "role": "dps",
+    "minimum_ip": 1450,
+    "main_hand": "Galatine Pair",
+    "head_piece": "Royal Hood",
+    "chest_armor": "Cleric Robe",
+    "shoes": "Scholar Sandals",
+    "cape": "Fort Sterling Cape"
+  },
+  "Wailing Bow": {
+    "role": "dps",
+    "minimum_ip": 1450,
+    "main_hand": "Wailing Bow",
+    "head_piece": ["Assassin Hood", "Royal Hood"],
+    "chest_armor": "Cleric Robe",
+    "shoes": "Scholar Sandals",
+    "cape": "Fort Sterling Cape"
+  },
+  "Longbow": {
+    "role": "dps",
+    "minimum_ip": 1450,
+    "main_hand": "Longbow",
+    "head_piece": "Knight Helmet",
+    "chest_armor": "Cleric Robe",
+    "shoes": "Scholar Sandals",
+    "cape": "Fort Sterling Cape"
+  },
+  "Grovekeeper": {
+    "role": "tank",
+    "minimum_ip": 1350,
+    "main_hand": "Grovekeeper",
+    "head_piece": "Judicator Helmet",
+    "chest_armor": "Guardian Armor",
+    "shoes": "Hunter Shoes",
+    "cape": "Martlock Cape"
+  },
+  "Soulscythe": {
+    "role": "tank",
+    "minimum_ip": 1300,
+    "main_hand": "Soulscythe",
+    "head_piece": "Knight Helmet",
+    "chest_armor": ["Demon Armor", "Judicator Armor"],
+    "shoes": "Hunter Shoes",
+    "cape": "Martlock Cape"
+  },
+  "Camlann": {
+    "role": "tank",
+    "minimum_ip": 1300,
+    "main_hand": "Camlann Mace",
+    "head_piece": "Knight Helmet",
+    "chest_armor": "Demon Armor",
+    "shoes": "Hunter Shoes",
+    "cape": "Martlock Cape"
+  },
+  "Hand of Justice": {
+    "role": "tank",
+    "minimum_ip": 1300,
+    "main_hand": "Hand of Justice",
+    "head_piece": "Knight Helmet",
+    "chest_armor": ["Judicator Armor", "Guardian Armor"],
+    "shoes": "Hunter Shoes",
+    "cape": "Martlock Cape"
+  },
   "Malevolent Locus": {
     "role": "support",
     "minimum_ip": 1300,
