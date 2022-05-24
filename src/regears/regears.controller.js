@@ -4,7 +4,7 @@ const validGear = require('../data/validGear.json');
 const asyncErrorBoundary = require('../errors/asyncErrorBoundary');
 
 const validGuilds = ['Tidal', 'Tidal Surge', 'Ripple'];
-const minTier = 8;
+const minTier = 7;
 const minIp = 1300;
 
 const validProperties = [
