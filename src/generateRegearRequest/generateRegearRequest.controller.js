@@ -55,34 +55,33 @@ function generateNewResponseBody(req, res, next) {
 
   res.locals.regearReq = {};
   // set properties from original request body
-  res.locals.regearReq.character_name = character_name;
-  res.locals.regearReq.guild_name = guild_name;
-  res.locals.regearReq.event_id = event_id;
-  res.locals.regearReq.item_power = item_power;
+  res.locals.regearReq.characterName = character_name;
+  res.locals.regearReq.guildName = guild_name;
+  res.locals.regearReq.eventId = event_id;
+  res.locals.regearReq.itemPower = item_power;
 
   // set main_hand properties
-  res.locals.regearReq.main_hand = shortenedNames[0];
-  res.locals.regearReq.main_tier = itemLevels[main_hand].itemLevel;
-  res.locals.regearReq.main_equivalent = itemLevels[main_hand].tierEquivalent;
+  res.locals.regearReq.mainHand = shortenedNames[0];
+  res.locals.regearReq.mainTier = itemLevels[main_hand].itemLevel;
+  res.locals.regearReq.mainEquivalent = itemLevels[main_hand].tierEquivalent;
 
   // set head_gear properties
-  res.locals.regearReq.head_gear = shortenedNames[1];
-  res.locals.regearReq.head_tier = itemLevels[head_piece].itemLevel;
-  res.locals.regearReq.head_equivalent = itemLevels[head_piece].tierEquivalent;
+  res.locals.regearReq.headGear = shortenedNames[1];
+  res.locals.regearReq.headTier = itemLevels[head_piece].itemLevel;
+  res.locals.regearReq.headEquivalent = itemLevels[head_piece].tierEquivalent;
 
   // set chest_gear properties
-  res.locals.regearReq.chest_gear = shortenedNames[2];
-  res.locals.regearReq.chest_tier = itemLevels[chest_armor].itemLevel;
-  res.locals.regearReq.chest_equivalent =
-    itemLevels[chest_armor].tierEquivalent;
+  res.locals.regearReq.chestGear = shortenedNames[2];
+  res.locals.regearReq.chestTier = itemLevels[chest_armor].itemLevel;
+  res.locals.regearReq.chestEquivalent = itemLevels[chest_armor].tierEquivalent;
 
   // set shoes properties
   res.locals.regearReq.shoes = shortenedNames[3];
-  res.locals.regearReq.shoes_tier = itemLevels[shoes].itemLevel;
-  res.locals.regearReq.shoes_equivalent = itemLevels[shoes].tierEquivalent;
+  res.locals.regearReq.shoesTier = itemLevels[shoes].itemLevel;
+  res.locals.regearReq.shoesEquivalent = itemLevels[shoes].tierEquivalent;
 
   // set remaining properties from original request body.
-  res.locals.regearReq.time_of_death = time_of_death;
+  res.locals.regearReq.timeOfDeath = time_of_death;
 
   next();
 }
