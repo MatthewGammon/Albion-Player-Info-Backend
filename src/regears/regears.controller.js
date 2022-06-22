@@ -2,6 +2,7 @@ const service = require('./regears.service');
 const gear = require('../data/gear.json');
 const validGear = require('../data/validGear.json');
 const asyncErrorBoundary = require('../errors/asyncErrorBoundary');
+const { generateTier, getItemName } = require('../utils/utils');
 
 const validGuilds = ['Tidal', 'Tidal Surge', 'Ripple'];
 const minTier = 7;
@@ -20,29 +21,6 @@ const validProperties = [
 ];
 
 const armorTypes = ['CLOTH', 'LEATHER', 'PLATE'];
-
-function generateTier(itemSlot) {
-  const tier = parseInt(itemSlot.slice(1, 2));
-  const enchantment = parseInt(itemSlot.split('@')[1]);
-
-  let tierEquivalent = tier;
-  let itemLevel = tier;
-
-  if (!isNaN(enchantment)) {
-    tierEquivalent += enchantment;
-    itemLevel = `${tier}.${enchantment}`;
-  }
-
-  return {
-    tierEquivalent,
-    itemLevel,
-  };
-}
-
-function getItemName(itemFullName) {
-  const shortenedName = itemFullName.split(' ').slice(1).join(' ');
-  return shortenedName;
-}
 
 function hasData(req, res, next) {
   const { data } = req.body;

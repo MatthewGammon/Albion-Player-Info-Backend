@@ -8,6 +8,7 @@ const cors = require('cors');
 const errorHandler = require('./errors/errorHandler');
 const notFound = require('./errors/notFound');
 const regearsRouter = require('./regears/regears.router');
+const generateRegearRequestRouter = require('./generateRegearRequest/generateRegearRequest.router');
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/regears', regearsRouter);
+app.use('/generateRegearRequest', generateRegearRequestRouter);
 app.use(
   '/',
   createProxyMiddleware({
