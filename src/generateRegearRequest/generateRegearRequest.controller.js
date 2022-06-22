@@ -48,6 +48,11 @@ function generateNewResponseBody(req, res, next) {
   } = req.body.data;
 
   res.locals.regearReq = {};
+  // set properties from original request body
+  res.locals.regearReq.character_name = character_name;
+  res.locals.regearReq.guild_name = guild_name;
+  res.locals.regearReq.event_id = event_id;
+  res.locals.regearReq.item_power = item_power;
 
   // set main_hand properties
   res.locals.regearReq.main_hand = shortenedNames[0];
@@ -71,10 +76,6 @@ function generateNewResponseBody(req, res, next) {
   res.locals.regearReq.shoes_equivalent = itemLevels[shoes].tierEquivalent;
 
   // set remaining properties from original request body.
-  res.locals.regearReq.character_name = character_name;
-  res.locals.regearReq.event_id = event_id;
-  res.locals.regearReq.guild_name = guild_name;
-  res.locals.regearReq.item_power = item_power;
   res.locals.regearReq.time_of_death = time_of_death;
 
   next();
