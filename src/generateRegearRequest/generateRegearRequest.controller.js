@@ -1,5 +1,11 @@
 const gear = require('../data/gear.json');
-const { generateTier, getItemName } = require('../utils/utils');
+const {
+  Regears_Base_Url,
+  generateTier,
+  getItemName,
+} = require('../utils/utils');
+
+const fetch = require('node-fetch');
 
 // I need these objects available globally in order to control the order of my res.locals.regearReq object.
 // this is important for when I map it to my model in my Spring Boot application.
@@ -81,9 +87,16 @@ function generateNewResponseBody(req, res, next) {
   next();
 }
 
-function create(req, res, next) {
+async function create(req, res, next) {
   const regearRequest = res.locals.regearReq;
-  res.status(201).json(regearRequest);
+  const response = await fetch(`${Regears_Base_Url}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(regearRequest),
+  });
+  return response.json();
 }
 
 module.exports = {
