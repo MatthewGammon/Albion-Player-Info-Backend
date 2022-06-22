@@ -91,14 +91,18 @@ function generateNewResponseBody(req, res, next) {
 
 async function create(req, res, next) {
   const regearRequest = res.locals.regearReq;
-  const response = await fetch(`${Regears_Base_Url}`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(regearRequest),
-  });
-  res.status(201).json(response);
+  try {
+    const response = await fetch(`${Regears_Base_Url}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(regearRequest),
+    });
+    res.status(201).json(response);
+  } catch (error) {
+    throw error;
+  }
 }
 
 module.exports = {
