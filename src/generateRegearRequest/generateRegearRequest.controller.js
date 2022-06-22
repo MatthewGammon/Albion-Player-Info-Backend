@@ -9,8 +9,8 @@ const fetch = require('node-fetch');
 
 // I need these objects available globally in order to control the order of my res.locals.regearReq object.
 // this is important for when I map it to my model in my Spring Boot application.
-const shortenedNames = [];
-const itemLevels = {};
+let shortenedNames = [];
+let itemLevels = {};
 
 function generateEnglishName(req, res, next) {
   const { main_hand, head_piece, chest_armor, shoes } = req.body.data;
@@ -83,6 +83,9 @@ function generateNewResponseBody(req, res, next) {
   // set remaining properties from original request body.
   res.locals.regearReq.timeOfDeath = time_of_death;
 
+  shortenedNames = [];
+  itemLevels = {};
+
   next();
 }
 
@@ -95,7 +98,7 @@ async function create(req, res, next) {
     },
     body: JSON.stringify(regearRequest),
   });
-  return response.json();
+  res.status(201).json(response);
 }
 
 module.exports = {
