@@ -1,3 +1,5 @@
+const Regears_Base_Url = 'http://localhost:8080/regears/request';
+
 function generateTier(itemSlot) {
   const tier = parseInt(itemSlot.slice(1, 2));
   const enchantment = parseInt(itemSlot.split('@')[1]);
@@ -22,6 +24,7 @@ function getItemName(itemFullName) {
 }
 
 module.exports = {
+  Regears_Base_Url,
   generateTier,
   getItemName,
 };

@@ -17,6 +17,7 @@
     "express": "^4.17.3",
     "http-proxy-middleware": "^2.0.3",
     "knex": "^1.0.3",
+    "node-fetch": "2.0",
     "pg": "^8.7.3"
   },
   "devDependencies": {
