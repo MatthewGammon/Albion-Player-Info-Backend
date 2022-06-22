@@ -3,7 +3,7 @@ const { generateTier, getItemName } = require('../utils/utils');
 
 // I need these objects available globally in order to control the order of my res.locals.regearReq object.
 // this is important for when I map it to my model in my Spring Boot application.
-const shortedNames = [];
+const shortenedNames = [];
 const itemLevels = {};
 
 function generateEnglishName(req, res, next) {
@@ -18,7 +18,7 @@ function generateEnglishName(req, res, next) {
 
   for (let fullName of englishNames) {
     const shortenedName = getItemName(fullName);
-    shortedNames.push(shortenedName);
+    shortenedNames.push(shortenedName);
   }
 
   next();
@@ -50,23 +50,23 @@ function generateNewResponseBody(req, res, next) {
   res.locals.regearReq = {};
 
   // set main_hand properties
-  res.locals.regearReq.main_hand = shortedNames[0];
+  res.locals.regearReq.main_hand = shortenedNames[0];
   res.locals.regearReq.main_tier = itemLevels[main_hand].itemLevel;
   res.locals.regearReq.main_equivalent = itemLevels[main_hand].tierEquivalent;
 
   // set head_gear properties
-  res.locals.regearReq.head_gear = shortedNames[1];
+  res.locals.regearReq.head_gear = shortenedNames[1];
   res.locals.regearReq.head_tier = itemLevels[head_piece].itemLevel;
   res.locals.regearReq.head_equivalent = itemLevels[head_piece].tierEquivalent;
 
   // set chest_gear properties
-  res.locals.regearReq.chest_gear = shortedNames[2];
+  res.locals.regearReq.chest_gear = shortenedNames[2];
   res.locals.regearReq.chest_tier = itemLevels[chest_armor].itemLevel;
   res.locals.regearReq.chest_equivalent =
     itemLevels[chest_armor].tierEquivalent;
 
   // set shoes properties
-  res.locals.regearReq.shoes = shortedNames[3];
+  res.locals.regearReq.shoes = shortenedNames[3];
   res.locals.regearReq.shoes_tier = itemLevels[shoes].itemLevel;
   res.locals.regearReq.shoes_equivalent = itemLevels[shoes].tierEquivalent;
 
@@ -82,7 +82,7 @@ function generateNewResponseBody(req, res, next) {
 
 function create(req, res, next) {
   const regearRequest = res.locals.regearReq;
-  res.status(201).json({ regearRequest });
+  res.status(201).json(regearRequest);
 }
 
 module.exports = {
