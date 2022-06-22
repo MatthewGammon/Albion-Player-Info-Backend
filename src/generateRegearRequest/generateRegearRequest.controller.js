@@ -92,7 +92,7 @@ function generateNewResponseBody(req, res, next) {
 async function create(req, res, next) {
   const regearRequest = res.locals.regearReq;
   try {
-    const response = await fetch(`${Regears_Base_Url}`, {
+    const response = await fetch('http://localhost:8080/regears/request', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -101,7 +101,7 @@ async function create(req, res, next) {
     });
     res.status(201).json(response);
   } catch (error) {
-    throw error;
+    console.log(error);
   }
 }
 
