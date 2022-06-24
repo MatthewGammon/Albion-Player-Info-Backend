@@ -89,6 +89,8 @@ function generateNewResponseBody(req, res, next) {
   next();
 }
 
+// this is not ideal, but it works!
+
 async function create(req, res, next) {
   const regearRequest = res.locals.regearReq;
   try {
@@ -99,9 +101,17 @@ async function create(req, res, next) {
       },
       body: JSON.stringify(regearRequest),
     });
-    res.status(201).json(response);
+
+    if (response.status == 400) {
+      next({
+        status: 400,
+        message: 'Invalid Build! Please check the approved builds list.',
+      });
+    } else {
+      res.status(201).json(response);
+    }
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 }
 
