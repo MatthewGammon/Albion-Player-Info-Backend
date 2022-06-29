@@ -93,20 +93,50 @@ function generateNewResponseBody(req, res, next) {
 
 async function create(req, res, next) {
   const regearRequest = res.locals.regearReq;
+  console.log(regearRequest);
   try {
-    const response = await fetch('http://localhost:8080/regears/request', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(regearRequest),
-    });
+    const response = await fetch(
+      'https://tidal-regears.herokuapp.com/regears/request',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(regearRequest),
+      }
+    );
+    console.log(response);
 
-    if (response.status == 400) {
+    if (response.status == 401) {
       next({
-        status: 400,
-        message: 'Invalid Build! Please check the approved builds list.',
+        status: response.status,
+        message: response.statusText,
       });
+    } else if (response.status == 400) {
+      const headers = response.headers;
+
+      if (headers.has('Regear-Exists')) {
+        next({
+          status: 400,
+          message: 'A regear request for this death already exists!',
+        });
+      } else if (headers.has('Invalid-Build')) {
+        next({
+          status: 400,
+          message: 'Invalid Build! Please check the approved builds list.',
+        });
+      } else if (headers.has('Item-Power')) {
+        next({
+          status: 400,
+          message:
+            'Item power is too low! Please check the minimum IP for your build.',
+        });
+      } else if (headers.has('Tier-Equiv')) {
+        next({
+          status: 400,
+          message: 'Item tier not high enough.',
+        });
+      }
     } else {
       res.status(201).json(response);
     }
